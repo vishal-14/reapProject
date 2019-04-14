@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>500 :Internal Server Error</title>
+    <link rel="icon" th:href="@{/images/favicon.ico}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
+          integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+</head>
+<body class="text-center">
+<h1 class="display-4">Something went wrong</h1>
+<div><img class="img-fluid" th:attr="src=@{/images/500.png}"/></div>
+<br>
+<a href="/"><button class="btn btn-lg btn-warning">Redirect to Login</button></a><br/>
+</body>
+</html>

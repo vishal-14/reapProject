@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/my-fragments :: header-fragment"></head>
+<body>
+<div th:replace="fragments/my-fragments :: navbar-fragment"></div>
+<div class="container" id="main">
+    <h1 class="display-4" th:text="'Hi ' + ${user.firstName} + '!'"></h1>
+    <div th:if="${error}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong th:text="${error}"></strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div th:replace="fragments/my-fragments :: user-details-fragment"></div>
+    <h1 class="display-4" th:if="${isAdmin}">User details</h1>
+    <div class="table-responsive">
+        <table class="text-center table table-light table-bordered" th:if="${isAdmin}">
+            <thead>
+            <tr class="table-success">
+                <th style="display: none" scope="col">ID</th>
+                <th scope="col">ID</th>
+                <th scope="col">Photo</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Roles</th>
+                <th scope="col">Active</th>
+                <th scope="col">Gold redeemable</th>
+                <th scope="col">Silver redeemable</th>
+                <th scope="col">Bronze redeemable</th>
+                <th scope="col">Points</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user: ${users}">
+                <form th:method="put" th:action="@{'/users/' + ${user.id}}" th:id="${'userDetailsForm' + user.id}">
+                    <th style="display: none" scope="row">
+                        <input hidden type="text" name="id" th:value="${user.id}"/>
+                    </th>
+                    <th scope="row" th:text="${user.id}"></th>
+                    <td>
+                        <img class="img-fluid user-photo"
+                             th:src="${(user.photo != null) ? user.getPhoto() : '/images/TTN-small.png'}"/>
+                    </td>
+                    <td th:text="${user.fullName}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:with="roleSet = ${user.getRoleSet()}">
+                        <div class="form-check">
+                            <input name="adminCheck"
+                                   th:checked="${#sets.contains(roleSet, T(com.ttn.reapProject.entity.Role).ADMIN)}"
+                                   class="form-check-input" type="checkbox" id="adminCheck">
+                            <label style="width: 10em" class="form-check-label" for="adminCheck">
+                                Admin
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input name="practiceHeadCheck"
+                                   th:checked="${#sets.contains(roleSet, T(com.ttn.reapProject.entity.Role).PRACTICE_HEAD)}"
+                                   class="form-check-input" type="checkbox" id="practiceHeadCheck">
+                            <label style="width: 10em" class="form-check-label" for="practiceHeadCheck">
+                                Practice head
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input name="supervisorCheck"
+                                   th:checked="${#sets.contains(roleSet, T(com.ttn.reapProject.entity.Role).SUPERVISOR)}"
+                                   class="form-check-input" type="checkbox" id="supervisorCheck">
+                            <label style="width: 10em" class="form-check-label" for="supervisorCheck">
+                                Supervisor
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input name="userCheck"
+                                   th:checked="${#sets.contains(roleSet, T(com.ttn.reapProject.entity.Role).USER)}"
+                                   class="form-check-input" type="checkbox" id="userCheck">
+                            <label style="width: 10em" class="form-check-label" for="userCheck">
+                                User
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check">
+                            <input name="active" class="form-check-input" type="checkbox"
+                                   th:checked="${user.getActive()}"/>
+                        </div>
+                    </td>
+                    <td>
+                        <input name="goldRedeemable" style="width: 3em" type="number" min="0"
+                               th:value="${user.getGoldRedeemable()}"/>
+                    </td>
+                    <td>
+                        <input name="silverRedeemable" style="width: 3em" type="number" min="0"
+                               th:value="${user.getSilverRedeemable()}"/>
+                    </td>
+                    <td>
+                        <input name="bronzeRedeemable" style="width: 3em" type="number" min="0"
+                               th:value="${user.getBronzeRedeemable()}"/>
+                    </td>
+                    <td th:text="${user.points}"></td>
+                    <td>
+                        <button type="submit" class="btn-sm btn btn-primary">Save</button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="fragments/my-fragments :: footer-fragment"></div>
+</body>
+</html>
